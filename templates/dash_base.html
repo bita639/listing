@@ -1,0 +1,71 @@
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>{% block title %}{% endblock title %}</title>
+
+    {% include 'partials/admin/_css.html' %}
+
+    {% block style %}
+
+    {% endblock style %}
+</head>
+<body>
+
+    <!-- start page loading -->
+    <div id="preloader">
+        <div class="row loader">
+            <div class="loader-icon"></div>
+        </div>
+    </div>
+    <!-- end page loading -->
+
+    <!-- start page container -->
+    <div class="page-container">
+        <!-- start page sidebar -->
+        {% include 'partials/admin/_sidebar.html' %}
+        <!-- end page sidebar -->
+
+        <!-- start page content -->
+        <div class="page-content">
+            <!-- start page header -->
+            {% include 'partials/admin/_header.html' %}
+            <!-- end page header -->
+
+
+            <!-- start page inner -->
+            <div class="page-inner">
+                {% block page_title %}
+
+                {% endblock page_title %}
+
+                <!-- start page main wrapper -->
+                <div id="main-wrapper">
+                    {% block content %}
+
+                    {% endblock content %}
+                </div>
+                <!-- end page main wrapper -->
+
+                {% include 'partials/admin/_footer.html' %}
+            </div>
+            <!-- end page inner -->
+
+        </div>
+        <!-- end page content -->
+    </div>
+    <!-- end page container -->
+
+
+
+    <!-- _footer.html -->
+        {% include 'partials/admin/_js.html' %}
+    <!-- _footer.html -->
+
+    {% block script %}
+
+    {% endblock script %}
+</body>
+</html>

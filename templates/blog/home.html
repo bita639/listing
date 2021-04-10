@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block banner %}
+    {% include 'partials/front/_page_section.html' %}
+{% endblock banner %}
+
+
+{% block content %}
+    <section>
+        <div class="container">
+                <div class="row">
+                    {% for article in article_list %}
+
+
+                    <!-- start blog -->
+                    <div class="col-lg-4 col-md-6 col-sm-12 margin-30px-bottom">
+                        <div class="card border-0 shadow h-100">
+                            <a href="{% url 'blog:single_article' article.id %}">
+                                <img class="card-img-top rounded" src="{{article.image.url}}" alt="" />
+                            </a>
+                            <div class="card-body padding-30px-all">
+                                <h5 class="card-title font-size22 font-weight-500 magin-20px-bottom">
+                                        <a href="{% url 'blog:single_article' article.id %}" class="text-extra-dark-gray">{{article.title}}</a>
+                                    </h5>
+                                <div class="margin-10px-bottom">
+                                    <span><a href="javascript:void()" class="font-size12 margin-15px-right text-extra-dark-gray"><i class="ti-user margin-5px-right"></i>{{article.author}}</a></span>
+                                </div>
+                                <p class="no-margin-bottom">
+                                    {{article.short_description}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end blog -->
+
+                    {% endfor %}
+                </div>
+            </div>
+    </section>
+{% endblock content %}

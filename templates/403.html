@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}
+    403
+{% endblock title %}
+
+
+{% block content %}
+    <!-- start 404 page section -->
+        <section class="text-center">
+            <div class="container">
+
+                <div class=" width-55 sm-width-100 center-col">
+
+                    <div class="row page-container">
+                        <div class="col-12">
+                            <h1 class="title text-theme-color">403</h1>
+                            <h2 class="font-size40 xs-font-size22 margin-40px-bottom xs-margin-20px-bottom">Forbidden</h2>
+                            <a href="{% url 'listings:home' %}" class="butn mr-2 my-1 my-sm-0">Back to Home</a>
+                            <a href="{% url 'listings:contact' %}" class="butn my-1 my-sm-0">Contact Us</a>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+            </div>
+        </section>
+        <!-- end 404 page section -->
+{% endblock content %}

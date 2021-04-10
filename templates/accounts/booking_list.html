@@ -1,0 +1,108 @@
+{% extends "dash_base.html" %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+
+{% block style %}
+    <style>
+        .star .fa-star{color: yellow;}
+    </style>
+{% endblock style %}
+
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block page_title %}
+    <div class="page-title">
+        <h3 class="breadcrumb-header">Dashboard</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">Welcome to Finder Dashboard -- {{user.get_full_name}}</li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <a href="{% url 'accounts:dashboard' %}">Dashbaord</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock page_title %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            {% include 'partials/_alert.html' %}
+            <div class="card card-white">
+                <div class="card-heading clearfix">
+                    <h4 class="card-title">{{title}}</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive invoice-table">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Owner</th>
+                                    <th>Listing</th>
+                                    <th>Booker</th>
+                                    <th>Departure Date</th>
+                                    <th>Status</th>
+                                    <th>Change Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                {% for b_list in booking_list %}
+                                <tr>
+                                    <th scope="row">{{b_list.id}}</th>
+                                    <td>{{b_list.listing.owner.get_full_name}}</td>
+                                    <td>{{b_list.listing.title}}</td>
+                                    <td>{{b_list.user.get_full_name}}</td>
+                                    <td>{{b_list.end_time}}</td>
+                                    <td>
+                                        <span class="label label-info">{{b_list.get_status_display}}</span>
+
+                                    </td>
+                                    {% if b_list.listing.owner == request.user %}
+                                        <td>
+
+                                            <form action="{% url 'accounts:change_booking_status' b_list.id %}" method="POST">
+                                                {% csrf_token %}
+                                                {{change_booking_status.status|as_crispy_field}}
+
+                                                <input type="submit" class="btn btn-success btn-sm" value="Save">
+                                            </form>
+                                        </td>
+                                    {% else %}
+                                        <td>
+                                            <span class="label label-danger">
+                                            This is Not Your Listing
+                                            </span>
+                                        </td>
+                                    {% endif %}
+
+
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if is_paginated %}
+            <div class="col-md-12">
+                {% include 'partials/admin/_pagination.html' %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}
+
+
+{% block script %}
+    <script src="{% static 'front/js/rating.js' %}"></script>
+{% endblock script %}

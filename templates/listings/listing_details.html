@@ -1,0 +1,338 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load simple_tag %}
+{% load crispy_forms_tags %}
+
+{% block style %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.2/rangeslider.css">
+    <style>
+        .star .fa-star{color: yellow;}
+    </style>
+{% endblock style %}
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block banner %}
+    {% include 'partials/front/_page_section.html' %}
+{% endblock banner %}
+
+
+{% block content %}
+    <section>
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-8 margin-50px-bottom">
+                        {% include 'partials/_alert.html' %}
+
+
+
+                        <div class="listing-detail margin-50px-bottom sm-margin-35px-bottom">
+                            <h3 class="font-weight-500">{{listing.title}}</h3>
+                            <div>
+                                <ul class="bg-light-gray padding-20px-tb padding-30px-lr rounded">
+                                    <li><a href="#!"><i class="fas fa-map-marked-alt margin-10px-right text-theme-color"></i>{{listing.address}}, {{listing.city}}, {{listing.zip_code}}</a>
+                                    </li>
+                                    <li><a href="#!"><i class="fa fa-phone margin-10px-right text-theme-color"></i>{{listing.owner.user_profile.phone_number}}</a></li>
+                                    <li><span>Open from {{listing.start_time|date:"M d, Y"}} To {{listing.end_time|date:"M d, Y"}}</span></li>
+                                    <li>
+                                        <span>
+                                            <a href="{% url 'listings:user_listing' listing.owner.username %}">{{listing.owner.get_full_name}}'s Others Listing</a>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="margin-50px-bottom sm-margin-35px-bottom">
+                            <h5 class="font-size20 border-bottom padding-20px-bottom">Description</h5>
+                            <p>{{listing.description}}</p>
+                        </div>
+                        <div class="margin-50px-bottom sm-margin-35px-bottom">
+                            <h5 class="font-size20 border-bottom padding-20px-bottom">Facilities</h5>
+                            <div class="row">
+
+                                {% for extra in listing.listing_extras.all %}
+                                   <div class="col-md-3 col-6 xs-margin-10px-bottom">
+                                        {{extra.facility_name}} -- {{extra.get_status_display}}
+                                    </div>
+                                {% endfor %}
+
+
+                            </div>
+                        </div>
+                        <div class="margin-50px-bottom sm-margin-35px-bottom">
+                            <h5 class="font-size20 border-bottom padding-20px-bottom">Gallery</h5>
+                            <div class="owl-carousel owl-theme listing">
+                                {% for image in listing.listing_images.all %}
+                                    <div>
+                                        <img src="{{image.image.url}}" alt="" />
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="margin-50px-bottom sm-margin-35px-bottom">
+                            <h5 class="font-size20 border-bottom padding-20px-bottom">Tags</h5>
+                            <ul class="tags margin-30px-bottom">
+                                {% for tag in listing.tags.all %}
+                                   <li>
+                                        <a href="{% url 'listings:tag_listing' tag.slug %}">{{tag.name}}</a>
+                                    </li>
+                                {% endfor %}
+
+
+
+                            </ul>
+                            <div class="row align-items-center">
+                                <div class="col-md-12 my-3">
+
+                                    <h6 id="rating-heading" style="display:none">Rating Value : <strong id="rating-value"></strong></h6>
+                                    <form action="{% url 'listings:listing_rating' listing.id %}" method="POST" novalidate>
+
+                                        {% csrf_token %}
+                                        {{rating_form.rating|as_crispy_field}}
+                                        {{rating_form.facility|as_crispy_field}}
+                                        {{rating_form.staff|as_crispy_field}}
+                                        {{rating_form.price|as_crispy_field}}
+
+                                        {{rating_form.review|as_crispy_field}}
+
+                                        <input type="submit" value="Submit" class="btn btn-outline-warning">
+                                    </form>
+                                </div>
+                                <div class="col-lg-3 col-md-4">
+                                    <div class="bg-theme padding-30px-tb text-center border-radius-4">
+                                        <h6 class="no-margin-bottom text-white">
+                                            Total Rating {{listing.listing_ratings.all.count}}
+                                        </h6>
+                                        <h6 class="no-margin-bottom text-white font-size18">Overall Rating</h6>
+                                        <h6 class="font-size40 no-margin-bottom text-white">
+                                            {% if average_listing_rating.avg_rating %}
+                                                {{average_listing_rating.avg_rating}}
+                                            {% else %}
+                                                0
+                                            {% endif %}
+
+                                        </h6>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-9 col-md-8 mb-30">
+                                    <div class="progress-text">
+                                        <div class="row">
+                                            <div class="col-6">Rating</div>
+                                            <div class="col-6 text-right">{{avg_rating_value.avg_rating_value|percentage}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="custom-progress progress1">
+                                        <div class="animated custom-bar progress-bar slideInLeft" style="width:{{avg_rating_value.avg_rating_value|percentage}}" aria-valuemax="100" aria-valuemin="0" aria-valuenow="10" role="progressbar"></div>
+                                    </div>
+
+                                    <div class="progress-text">
+                                        <div class="row">
+                                            <div class="col-6">Price</div>
+                                            <div class="col-6 text-right">{{avg_price_value.avg_price_value|percentage}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="custom-progress progress1">
+                                        <div class="animated custom-bar progress-bar slideInLeft" style="width:{{avg_price_value.avg_price_value|percentage}}" aria-valuemax="100" aria-valuemin="0" aria-valuenow="10" role="progressbar"></div>
+                                    </div>
+
+
+                                    <div class="progress-text">
+                                        <div class="row">
+                                            <div class="col-6">Staff</div>
+                                            <div class="col-6 text-right">{{avg_staff_value.avg_staff_value|percentage}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="custom-progress progress1">
+                                        <div class="animated custom-bar progress-bar slideInLeft" style="width:{{avg_staff_value.avg_staff_value|percentage}}" aria-valuemax="100" aria-valuemin="0" aria-valuenow="10" role="progressbar"></div>
+                                    </div>
+
+                                    <div class="progress-text">
+                                        <div class="row">
+                                            <div class="col-6">Facility</div>
+                                            <div class="col-6 text-right">{{avg_facility_value.avg_facility_value|percentage}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="custom-progress progress1">
+                                        <div class="animated custom-bar progress-bar slideInLeft" style="width:{{avg_facility_value.avg_facility_value|percentage}}" aria-valuemax="100" aria-valuemin="0" aria-valuenow="10" role="progressbar"></div>
+                                    </div>
+
+
+                                        <div class="overflow-auto" style="height:200px">
+                                            <h6 class="text-dark text-center">All Reviews</h6>
+                                            <hr>
+                                            {% for review in reviews %}
+                                                <div class="media">
+                                                    <div class="msg-img mr-4">
+                                                        <img src="{{review.user.user_profile.profile_pic.url}}" width="60px" alt="" />
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <h6 class="d-inline-block m-0 p-0">{{review.user.get_full_name}}</h6>
+                                                        <div class="star float-right">
+                                                            <span class="fa fa-star-o" data-rating="1"></span>
+                                                            <span class="fa fa-star-o" data-rating="2"></span>
+                                                            <span class="fa fa-star-o" data-rating="3"></span>
+                                                            <span class="fa fa-star-o" data-rating="4"></span>
+                                                            <span class="fa fa-star-o" data-rating="5"></span>
+                                                            <input type="hidden" class="rating-value" value="{{review.user_average_rating}}">
+                                                        </div>
+                                                        <span class="d-block text-muted">{{review.created_at}}</span>
+                                                        <p class="mb-5">{{review.review}}</p>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="margin-50px-bottom sm-margin-35px-bottom">
+                            <h5 class="font-size20 border-bottom padding-20px-bottom">Location</h5>
+                            <iframe class="contact-map" id="gmap_canvas" src="https://maps.google.com/maps?q={{listing.city}}&amp;t=&amp;z=13&amp;ie=UTF8&amp;iwloc=&amp;output=embed" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                        </div>
+                        <div class="margin-60px-bottom sm-margin-40px-bottom blogs">
+                            <div class="comments-area">
+                                <h5 class="font-size20 border-bottom padding-20px-bottom">Comments</h5>
+                                {% for comment in listing.listing_comments.all %}
+                                    <div class="comment-box">
+                                        <div class="author-thumb">
+                                            <img src="{{comment.user.user_profile.profile_pic.url}}" alt="" class="rounded-circle width-85 xs-width-100" />
+                                        </div>
+                                        <div class="comment-info">
+                                            <h6><a href="javascript:void(0);">{{comment.user.get_full_name}}</a></h6>
+                                            <p>{{comment.comment}}</p>
+                                            <div class="reply">
+                                                <a href="javascript:void(0);">
+                                                    <i class="fa fa-reply" aria-hidden="true"></i> Reply
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                        <div class="comment-form">
+                                <div class="title-g margin-30px-bottom">
+                                    <h3>Post a Comment</h3>
+                                </div>
+                                <form action="{% url 'listings:listing_comment' listing.id %}" id="comment-form" method="POST" novalidate>
+                                    {% csrf_token %}
+                                    <div class="controls">
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                {{comment_form.name|as_crispy_field}}
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                {{comment_form.email|as_crispy_field}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 form-group">
+                                               {{comment_form.comment|as_crispy_field}}
+                                            </div>
+                                            <div class="col-md-12">
+                                                <button type="submit" class="butn"><span>Send Message</span></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-4">
+
+                            <div class="side-bar">
+                                <div class="widget">
+                                    <div class="widget-title"><h3>Online Reservation</h3></div>
+                                    <form method="POST" action="{% url 'listings:listing_booking' listing.id %}" novalidate>
+                                        {% csrf_token %}
+                                        <div class="row">
+                                            {% if user.is_authenticated %}
+                                                <div class="form-group col-md-12">
+                                                   {{booking_form.start_time|as_crispy_field}}
+                                                </div>
+                                                <div class="form-group col-md-12">
+                                                   {{booking_form.end_time|as_crispy_field}}
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <button type="submit" class="butn">Submit</button>
+                                                </div>
+                                            {% else %}
+                                                <p class="lead text-dark text-center">
+                                                    Please <a href="{% url 'accounts:login' %}" class="btn btn-link">Login</a> To Book This Listing
+                                                </p>
+                                            {% endif %}
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="widget">
+                                    <div class="widget-title"><h3>Related Listings</h3></div>
+                                    <div class="listing-grid owl-carousel owl-theme">
+                                        {% for r_listing in related_listings %}
+
+
+                                        <a href="{% url 'listings:listing_details' r_listing.slug %}" class="card box-hover transition-none bg-img cover-background border-0 p-4"
+                                        {% with r_listing.listing_images.all|first as image %}
+                                          data-background="{{image.image.url}}"
+                                        {% endwith %}
+                                        >
+                                            <div class="mt-auto z-index-9">
+                                                <h5 class="text-white">{{r_listing.title}}</h5>
+                                                <hr class="border-color-light-white">
+                                                <div class="position-relative z-index-9 text-white"><span class="ti-location-pin text-primary"></span> {{r_listing.area}}--{{r_listing.city}}</div>
+                                            </div>
+                                        </a>
+
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+
+                                <div class="widget">
+                                    <div class="widget-title"><h3>Information</h3>
+                                    <ul class="contact-info mt-4 mb-0">
+                                        <li>
+                                            <i class="fa fa-phone"></i>{{listing.owner.user_profile.phone_number}}
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-envelope"></i> {{listing.owner.email}}
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-map-marker-alt"></i> {{listing.owner.user_profile.address}}
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-globe-asia"></i> www.websiteaname.com
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+
+                    </div>
+                </div>
+            </div>
+    </section>
+{% endblock content %}
+
+
+{% block script %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.3/rangeslider.min.js"></script>
+    <script>
+    $('input[type="range"]').rangeslider({
+        polyfill: false,
+        // Callback function
+        onSlide: function(position, value) {
+            $('#rating-heading').show();
+            $('#rating-value').text(value)
+        },
+    });
+    </script>
+    <script src="{% static 'front/js/rating.js' %}"></script>
+
+{% endblock script %}

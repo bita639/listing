@@ -1,0 +1,112 @@
+{% extends "dash_base.html" %}
+
+{% load static %}
+
+{% load simple_tag %}
+
+{% load crispy_forms_tags %}
+
+{% block style %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.2/rangeslider.css">
+    <style>
+        .star .fa-star{color: yellow;font-size: 20px;}
+    </style>
+{% endblock style %}
+
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block page_title %}
+    <div class="page-title">
+        <h3 class="breadcrumb-header">Dashboard</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">Welcome to Finder Dashboard -- {{user.get_full_name}}</li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <a href="{% url 'accounts:dashboard' %}">Dashbaord</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">My Listing</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock page_title %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            {% include 'partials/_alert.html' %}
+            <div class="card card-white mb-5">
+                <div class="card-heading clearfix border-bottom mb-4">
+                    <h4 class="card-title">Active Listings</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        {% for listing in listing_list %}
+                            <li class="position-relative booking">
+                                <div class="media align-items-center">
+                                    <div class="mr-4">
+                                        {% with listing.listing_images.all|first as image %}
+                                            <img class="rounded" src="{{image.image.url}}" alt=""  width="200" />
+                                        {% endwith %}
+
+                                    </div>
+                                    <div class="media-body">
+                                        <div class="star">
+                                            <i class="fa fa-star-o" data-rating="1"></i>
+                                            <i class="fa fa-star-o" data-rating="2"></i>
+                                            <i class="fa fa-star-o" data-rating="3"></i>
+                                            <i class="fa fa-star-o" data-rating="4"></i>
+                                            <i class="fa fa-star-o" data-rating="5"></i>
+                                            <input type="hidden" class="rating-value" value="{{listing|overall_rating}}">
+                                        </div>
+                                        <h5 class="mb-1 mt-2">
+                                            <a href="#" class="text-extra-dark-gray">{{listing.title}}</a>
+                                        </h5>
+                                        <span class="d-block mb-4">{{listing.area}}--{{listing.city}}</span>
+                                        <a href="#" class="text-primary"><i class="far fa-envelope margin-5px-right"></i> {{listing.listing_comments.count}}</a>
+                                    </div>
+                                </div>
+                                <div class="buttons-to-right">
+                                    <a href="{% url 'listings:edit_listing' listing.slug %}" class="btn-gray"><i class="far fa-edit mr-2"></i>Edit</a>
+
+                                    {% if listing.active %}
+                                        <a
+                                        data-title="Inactive {{listing.title}}?"
+                                        href="{% url 'listings:listing_status_toggle' listing.slug %}" class="btn-gray mr-2 listing-inactive">
+                                            <i class="far fa-times-circle mr-2"></i>
+                                            Make Inactive
+                                        </a>
+                                    {% else %}
+                                        <a
+                                        data-title="Active {{listing.title}}?"
+                                        href="{% url 'listings:listing_status_toggle' listing.slug %}" class="btn-gray mr-2 listing-active"><i class="far fa-check-circle mr-2"></i>Make Active</a>
+                                    {% endif %}
+
+                                    <a
+                                    data-title="Delete {{listing.title}}?"
+                                    href="{% url 'listings:delete_listing' listing.id %}"class="btn-gray mr-2 listing-delete"
+                                    >
+                                    <i class="fas fa-trash mr-2"></i>Delete</a>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+        {% if is_paginated %}
+            <div class="col-md-12">
+                {% include 'partials/admin/_pagination.html' %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}
+
+
+
+{% block script %}
+    <script src="{% static 'front/js/rating.js' %}"></script>
+{% endblock script %}

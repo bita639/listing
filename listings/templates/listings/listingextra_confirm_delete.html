@@ -1,0 +1,38 @@
+{% extends "dash_base.html" %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block page_title %}
+    <div class="page-title">
+        <h3 class="breadcrumb-header">Dashboard</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">Welcome to Finder Dashboard -- {{user.get_full_name}}</li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <a href="{% url 'accounts:dashboard' %}">Dashbaord</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock page_title %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <form method="post">{% csrf_token %}
+                <div class="col-md-8 mx-auto">
+                    <p>Are you sure you want to delete? {{object.facility_name}}</p>
+
+                    <input type="submit" value="Confirm" class="btn btn-link btn-outline-danger">
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

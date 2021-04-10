@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block banner %}
+    {% include 'partials/front/_banner.html' %}
+{% endblock banner %}
+
+
+{% block content %}
+    <section>
+            <div class="container">
+                <div class="text-center margin-40px-bottom">
+                    <h3 class="margin-10px-bottom">Find Rooms  Near You</h3>
+                    <p class="no-margin-bottom">Find Rooms In Reasonable Price For Your Night</p>
+                </div>
+                <div class="row">
+
+                    {% for listing in listing_list %}
+
+
+
+                    <div class="col-md-6 col-lg-4 margin-30px-bottom">
+                        <a href="{% url 'listings:listing_details' listing.slug %}" class="card bg-img box-hover cover-background border-0 p-4 h-100"
+                        {% with listing.listing_images.all|first as image %}
+                            data-background="{{image.image.url}}"
+                        {% endwith %}
+                        >
+                            <div class="mt-auto position-relative z-index-9">
+                                <h5 class="text-white">{{listing.title}}</h5>
+                                <hr class="border-color-light-white">
+                                <div class="position-relative z-index-9 text-white"><span class="ti-location-pin text-primary"></span>{{listing.city}}--{{listing.area}}</div>
+                            </div>
+                        </a>
+                    </div>
+
+                    {% endfor %}
+
+
+                    {% if is_paginated %}
+                        <div class="col-md-12">
+                            {% include 'partials/front/_pagination.html' %}
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+        </section>
+{% endblock content %}

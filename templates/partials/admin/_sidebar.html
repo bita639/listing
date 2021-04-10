@@ -1,0 +1,72 @@
+<div class="page-sidebar">
+            <a class="logo-box" href="{% url 'accounts:dashboard' %}">
+                <span>Finder</span>
+                <i class="icon-radio_button_unchecked" id="fixed-sidebar-toggle-button"></i>
+                <i class="icon-close" id="sidebar-toggle-button-close"></i>
+            </a>
+            <div class="page-sidebar-inner">
+                <div class="page-sidebar-menu">
+                    <ul class="accordion-menu">
+                        <li>
+                            <h4>Main</h4></li>
+                        <li>
+                            <a href="{% url 'accounts:dashboard' %}">
+                                <i class="menu-icon icon-home4"></i><span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'listings:home' %}" target="_blank">
+                                <i class="menu-icon icon-inbox"></i><span>View Site</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'accounts:my_booking' %}">
+                                <i class="menu-icon icon-book"></i><span>Booking</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'accounts:my_wallet' %}">
+                                <i class="menu-icon icon-newspaper"></i><span>Wallet</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <h4>Listing</h4></li>
+
+                        <li>
+                            <a href="{% url 'accounts:my_listing' %}">
+                                <i class="menu-icon icon-list2"></i><span>My Listing</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{% url 'accounts:my_listing_reviews' %}">
+                                <i class="menu-icon icon-star-empty"></i><span>Reviews</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{% url 'listings:add_listing' %}">
+                                <i class="menu-icon icon-file-text"></i><span>Add Listing</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <h4>Account</h4></li>
+
+                        <li>
+                            <a href="{% url 'accounts:my_profile' %}">
+                                <i class="menu-icon icon-user"></i><span>My Profile</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{% url 'accounts:logout' %}">
+                                <i class="menu-icon icon-lock"></i><span>Logout</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>

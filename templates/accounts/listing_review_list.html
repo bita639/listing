@@ -1,0 +1,87 @@
+{% extends "dash_base.html" %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+
+{% block style %}
+    <style>
+        .star .fa-star{color: yellow;}
+    </style>
+{% endblock style %}
+
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block page_title %}
+    <div class="page-title">
+        <h3 class="breadcrumb-header">Dashboard</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">Welcome to Finder Dashboard -- {{user.get_full_name}}</li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <a href="{% url 'accounts:dashboard' %}">Dashbaord</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock page_title %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card card-white mb-5">
+                <div class="card-heading clearfix border-bottom mb-4">
+                    <h4 class="card-title">Reviews</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        {% for review in listing_review_list %}
+                            <li class="position-relative booking">
+                                <div class="media">
+                                    <div class="msg-img">
+                                        <img src="{{review.listing.owner.user_profile.profile_pic.url  }}" alt="" />
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="d-inline-block">{{review.user.get_full_name}} <span class="text-muted">on <a href="javascript:void(0)" class="text-muted">{{review.listing.title}}</a></span></h5><br>
+                                        <h5 class="d-inline-block">{{review.user.email}} <span class="text-muted">---
+                                        <a href="javascript:void(0)" class="text-muted">{{review.user.user_profile.phone_number}}</a></span>
+                                        </h5>
+                                        <div class="star float-right">
+                                            <span class="fa fa-star-o" data-rating="1"></span>
+                                            <span class="fa fa-star-o" data-rating="2"></span>
+                                            <span class="fa fa-star-o" data-rating="3"></span>
+                                            <span class="fa fa-star-o" data-rating="4"></span>
+                                            <span class="fa fa-star-o" data-rating="5"></span>
+                                            <input type="hidden" class="rating-value" value="{{review.user_average_rating}}">
+                                        </div>
+                                        <span class="d-block mb-3 text-muted">{{review.created_at}}</span>
+                                        <p class="mb-4">{{review.review}}</p>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                </div>
+            </div>
+
+            {% if is_paginated %}
+                <div class="col-md-12">
+                    {% include 'partials/admin/_pagination.html' %}
+                </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+{% endblock content %}
+
+
+{% block script %}
+    <script src="{% static 'front/js/rating.js' %}"></script>
+{% endblock script %}

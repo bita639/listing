@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block banner %}
+    {% include 'partials/front/_banner.html' %}
+{% endblock banner %}
+
+
+{% block content %}
+    <section>
+            <div class="container">
+                <div class="text-center margin-40px-bottom">
+                    <h3 class="margin-10px-bottom">Featured Categories</h3>
+                    <p class="no-margin-bottom"></p>
+                </div>
+                <div class="row">
+                    {% for cat in all_categories %}
+                    <div class="col-sm-6 col-md-4 col-lg-3 margin-40px-bottom mobile-margin-25px-bottom">
+                        <a href="{% url 'listings:category_listing' cat.slug %}">
+                            <div class="feature-inner display-table">
+                                <div class="display-table-cell vertical-align-middle">
+                                    <div class="bg-icon">
+                                        <i class="ti-server"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-size20">{{cat.name}}</h5>
+                                        <img src="{{cat.image.url}}" alt="">
+                                        <i class="fas fa-list font-size32 text-theme-color"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+    </section>
+
+
+    <section>
+            <div class="container">
+                <div class="text-center margin-40px-bottom">
+                    <h3 class="margin-10px-bottom">Find Flat  Near You</h3>
+                    <p class="no-margin-bottom">Find Falt In Reasonable Price For Your Night</p>
+                </div>
+                <div class="row">
+                    {% for listing in recent_listings %}
+                    <div class="col-md-6 col-lg-4 margin-30px-bottom">
+                        <a href="{% url 'listings:listing_details' listing.slug %}" class="card bg-img box-hover cover-background border-0 p-4 h-100" data-background="{% with listing.listing_images.all|first as image %}
+                            {{image.image.url}}
+                        {% endwith %}">
+                            <div class="mt-auto position-relative z-index-9">
+                                <h5 class="text-white">{{listing.title}}</h5>
+                                <hr class="border-color-light-white">
+                                <div class="position-relative z-index-9 text-white"><span class="ti-location-pin text-primary"></span> {{listing.location}}</div>
+                            </div>
+                        </a>
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+            </div>
+    </section>
+
+    <!-- start contact section -->
+    <section class="bg-theme">
+        <div class="container">
+            <div class="text-center">
+                <h3 class="text-white margin-30px-bottom font-size38 sm-font-size36 xs-font-size34">Rent Or Find Rooms</h3>
+                <a class="butn white" href="{% url 'accounts:register' %}"><span class="alt-font">Sign Up</span></a>
+            </div>
+        </div>
+    </section>
+    <!-- end contact section -->
+
+    <!-- start services section -->
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 xs-margin-30px-bottom">
+                        <div class="text-center bg-white border padding-20px-lr padding-40px-tb border-radius-4 h-100">
+                            <span class="margin-20px-bottom font-size40 text-theme-color display-inline-block"><i class="ti-fullscreen"></i></span>
+                            <h3 class="font-size20 margin-20px-bottom sm-margin-10px-bottom">Find what you want</h3>
+                            <p class="center-col xs-width-95 no-margin-bottom">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 xs-margin-30px-bottom">
+                        <div class="text-center bg-white border padding-20px-lr padding-40px-tb border-radius-4 h-100">
+                            <span class="margin-20px-bottom font-size40 text-theme-color display-inline-block"><i class="ti-layers"></i></span>
+                            <h3 class="font-size20 margin-20px-bottom sm-margin-10px-bottom">Explore Best Places</h3>
+                            <p class="center-col xs-width-95 no-margin-bottom">It is a long established fact that a reader will be distracted by the readable content of a page.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center bg-white border padding-20px-lr padding-40px-tb border-radius-4 h-100">
+                            <span class="margin-20px-bottom font-size40 text-theme-color display-inline-block"><i class="ti-server"></i></span>
+                            <h3 class="font-size20 margin-20px-bottom sm-margin-10px-bottom">Make a Reservation</h3>
+                            <p class="center-col xs-width-95 no-margin-bottom">There are many variations of passages of Lorem Ipsum available, but the majority have suffered.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- end services section -->
+{% endblock content %}

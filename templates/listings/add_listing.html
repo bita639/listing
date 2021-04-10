@@ -1,0 +1,220 @@
+{% extends "dash_base.html" %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'front/css/tagsinput.css' %}">
+{% endblock style %}
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block page_title %}
+    <div class="page-title">
+        <h3 class="breadcrumb-header">Dashboard</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">Welcome to Finder Dashboard -- {{user.get_full_name}}</li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <a href="{% url 'accounts:dashboard' %}">Dashbaord</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock page_title %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+
+            <form action="{% url 'listings:add_listing' %}" method="POST" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+                <div class="row">
+
+                    <div class="col-md-12">
+                        {% include 'partials/_alert.html' %}
+                        <div class="card card-white">
+                            <div class="card-heading clearfix border-bottom mb-4">
+                                <h4 class="card-title">Basic Information</h4>
+                            </div>
+                            <div class="card-body">
+
+                                    <div class="form-row">
+                                        <div class="col-md-4 mb-3 mb-md-0">
+                                           {{add_listing_form.title|as_crispy_field}}
+
+                                        </div>
+                                        <div class="col-md-3">
+                                            {{add_listing_form.category|as_crispy_field}}
+                                        </div>
+                                        <div class="col-md-2">
+                                             {{add_listing_form.status|as_crispy_field}}
+                                        </div>
+                                        <div class="col-md-3 mb-3 mb-md-0">
+                                            {{add_listing_form.price|as_crispy_field}}
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-3 mb-3 mb-md-0">
+                                            {{add_listing_form.location|as_crispy_field}}
+                                        </div>
+                                        <div class="col-md-3">
+                                            {{add_listing_form.rooms|as_crispy_field}}
+                                        </div>
+                                        <div class="col-md-3">
+                                            {{add_listing_form.wash_rooms|as_crispy_field}}
+                                        </div>
+                                        <div class="col-md-3">
+                                            {{add_listing_form.flat_area|as_crispy_field}}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="col-md-6 mb-3 mb-md-0">
+                                            {{add_listing_form.start_time|as_crispy_field}}
+                                        </div>
+                                        <div class="col-md-6">
+                                            {{add_listing_form.end_time|as_crispy_field}}
+                                        </div>
+
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card card-white">
+                            <div class="card-heading clearfix border-bottom mb-4">
+                                <h4 class="card-title">Location</h4>
+                            </div>
+                            <div class="card-body">
+
+                                    <div class="form-row">
+                                        <div class="col-md-6">
+                                            {{add_listing_form.city|as_crispy_field}}
+                                        </div>
+                                        <div class="col-md-6">
+                                            {{add_listing_form.zip_code|as_crispy_field}}
+                                        </div>
+                                    </div>
+
+                            </div>
+                        </div>
+
+                        <div class="card card-white">
+                            <div class="card-heading clearfix border-bottom mb-4">
+                                <h4 class="card-title">File browser</h4>
+                            </div>
+                            <div class="card-body">
+
+                                    <div class="custom-file mb-3">
+                                        {{add_listing_form.images|as_crispy_field}}
+                                    </div>
+                                    <div class="gallery"></div>
+
+                            </div>
+                        </div>
+
+                        <div class="card card-white">
+                            <div class="card-heading clearfix border-bottom mb-4">
+                                <h4 class="card-title">Detailed Information</h4>
+                            </div>
+                            <div class="card-body">
+
+                                <div class="form-row">
+                                    <div class="col-md-12">
+                                       {{add_listing_form.description|as_crispy_field}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="card card-white">
+                            <div class="card-heading clearfix border-bottom mb-4">
+                                <h4 class="card-title">Tags</h4>
+                            </div>
+                            <div class="card-body">
+
+                                <div class="form-row">
+                                    <div class="col-md-12">
+                                       {{add_listing_form.tags|as_crispy_field}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card card-white">
+                            <div class="card-heading clearfix border-bottom mb-4">
+                                <h4 class="card-title">Amenities (optional)</h4>
+                            </div>
+                            <div class="card-body">
+
+
+                                <div class="customer_records">
+                                    <div class="d-flex my-2">
+                                        {{add_listing_form.facility_name|as_crispy_field}}
+
+                                        {{add_listing_form.facility_status_choice|as_crispy_field}}
+
+
+                                        <div class="form-group">
+                                            <a class="extra-fields-customer btn btn-link btn-outline-success mx-2 py-2" href="javascript:void(0)"><i class="fas fa-plus"></i></a>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="customer_records_dynamic"></div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <input type="submit" value="Save" class="btn btn-outline-primary btn-block">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+{% endblock content %}
+
+
+{% block script %}
+    <script src="{% static 'front/js/dynamic_field.js' %}"></script>
+    <script src="{% static 'front/js/tagsinput.js' %}"></script>
+
+
+    <script>
+        jQuery(document).ready(function($) {
+            var imagesPreview = function(input, placeToInsertImagePreview) {
+
+                if (input.files) {
+                    var filesAmount = input.files.length;
+
+                    for (i = 0; i < filesAmount; i++) {
+                        var reader = new FileReader();
+
+                        reader.onload = function(event) {
+                            $($.parseHTML('<img class="img-thumbnail img-fluid">')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
+                        }
+
+                        reader.readAsDataURL(input.files[i]);
+                    }
+                }
+
+            };
+
+            $('#gallery-photo-add').on('change', function() {
+                imagesPreview(this, 'div.gallery');
+            });
+        });
+    </script>
+{% endblock script %}

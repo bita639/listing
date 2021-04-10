@@ -1,0 +1,61 @@
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>{% block title %}{% endblock title %}</title>
+
+    {% include 'partials/front/_css.html' %}
+
+    {% block style %}
+
+    {% endblock style %}
+</head>
+<body>
+
+    <!-- start page loading -->
+    <div id="preloader">
+        <div class="row loader">
+            <div class="loader-icon"></div>
+        </div>
+    </div>
+    <!-- end page loading -->
+
+    <div class="main-wrapper">
+
+        <!-- _header.html -->
+        {% include 'partials/front/_header.html' %}
+        <!-- _header.html -->
+
+        {% block banner %}
+
+        {% endblock banner %}
+
+
+
+        {% block content %}
+
+        {% endblock content %}
+
+        <!-- _footer.html -->
+        {% include 'partials/front/_footer.html' %}
+        <!-- _footer.html -->
+
+
+    </div>
+
+
+    <!-- _footer.html -->
+        {% include 'partials/front/_js.html' %}
+    <!-- _footer.html -->
+
+    {% block script %}
+
+    {% endblock script %}
+</body>
+</html>
+
+
+

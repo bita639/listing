@@ -1,0 +1,26 @@
+<div class="text-center margin-60px-top sm-margin-40px-top">
+    <div class="pagination text-small text-uppercase text-extra-dark-gray">
+        <ul class="pagination pagination-sm">
+            {% if page_obj.has_previous %}
+                <li><a href="?page={{ page_obj.previous_page_number }}"<i class="fas fa-long-arrow-alt-left margin-5px-right xs-display-none"></i> Prev</a></li>
+            {% else %}
+                <li><a href="javascript:void(0)" class="disabled"><i class="fas fa-long-arrow-alt-left margin-5px-right xs-display-none"></i> Prev</a></li>
+            {% endif %}
+
+            {% for i in page_obj.paginator.page_range %}
+                {% if page_obj.number == i %}
+                    <li><a href="?page={{ i }}">{{i}}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <li><a href="?page={{ page_obj.next_page_number }}">Next <i class="fas fa-long-arrow-alt-right margin-5px-left xs-display-none"></i></a></li>
+            {% else %}
+                <li><a href="javascript:void(0)" class="disabled">Next <i class="fas fa-long-arrow-alt-right margin-5px-left xs-display-none"></i></a></li>
+            {% endif %}
+
+        </ul>
+    </div>
+</div>
+
+

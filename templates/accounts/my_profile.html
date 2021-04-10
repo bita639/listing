@@ -1,0 +1,119 @@
+{% extends "dash_base.html" %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block page_title %}
+    <div class="page-title">
+        <h3 class="breadcrumb-header">Dashboard</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">Welcome to Finder Dashboard -- {{user.get_full_name}}</li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <a href="{% url 'accounts:dashboard' %}">Dashbaord</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">My Profile</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock page_title %}
+
+{% block content %}
+    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card card-white">
+                                <div class="card-heading clearfix border-bottom mb-4">
+                                    <h4 class="card-title">Basic Information</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <form action="{% url 'accounts:my_profile' %}" method="POST" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            <div class="col-md-3 mb-4 mb-md-0">
+                                                <img src="{{user.user_profile.profile_pic.url}}" class="img-fluid" />
+                                            </div>
+                                            <input type="file" class="form-control-file" name="profile_image">
+                                            <input type="submit" value="Update Profile Pic" class="btn btn-primary btn-block">
+                                        </form>
+                                        <div class="col-md-9">
+                                            {% include 'partials/_alert.html' %}
+                                            <form method="POST" action="{% url 'accounts:my_profile' %}" novalidate>
+                                                {% csrf_token %}
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        {{update_profile_form.first_name|as_crispy_field}}
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                       {{update_profile_form.last_name|as_crispy_field}}
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        {{update_profile_form.phone_number|as_crispy_field}}
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        {{update_profile_form.address|as_crispy_field}}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="form-check">
+                                                         {{update_profile_form.about|as_crispy_field}}
+                                                    </div>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">Update Profile</button>
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card card-white">
+                                <div class="card-heading clearfix border-bottom mb-4">
+                                    <h4 class="card-title">Change Password</h4>
+                                </div>
+                                <div class="card-body">
+                                    {% include 'partials/_alert.html' %}
+                                    <form action="{% url 'accounts:change_password' %}" novalidate method="POST">
+                                        {% csrf_token %}
+                                        {{chanage_password_form|crispy}}
+                                        <button type="submit" class="btn btn-primary">Change Password</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card card-white">
+                                <div class="card-heading clearfix border-bottom mb-4">
+                                    <h4 class="card-title">Socials</h4>
+                                </div>
+                                <div class="card-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="inputFacebook">Facebook</label>
+                                            <input type="email" class="form-control" id="inputFacebook" placeholder="www.facebook.com">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputTwitter">Twitter</label>
+                                            <input type="email" class="form-control" id="inputTwitter" placeholder="www.twitter.com">
+                                        </div>
+                                        <div class="form-group mb-4">
+                                            <label for="inputWhatsapp">Whatsapp</label>
+                                            <input type="email" class="form-control" id="inputWhatsapp" placeholder="www.whatsapp.com">
+                                        </div>
+                                        <a href="#" class="btn btn-primary">Send Changes</a>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+{% endblock content %}
+
+

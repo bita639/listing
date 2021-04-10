@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block banner %}
+    {% include 'partials/front/_page_section.html' %}
+{% endblock banner %}
+
+
+{% block content %}
+    <section>
+        <div class="row">
+            <div class="container">
+                <div class="col-lg-8 center-col">
+                    <div class="padding-40px-all sm-padding-25px-all shadow border-radius-4">
+                        {% include 'partials/_alert.html' %}
+                        {% include 'partials/_message.html' with form=form %}
+                        <h3 class="text-center margin-40px-bottom">Login</h3>
+                            <form method="post" action="" novalidate>
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                {{form.username|as_crispy_field}}
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                {{form.password|as_crispy_field}}
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6 text-left text-sm-right">
+                                            <a href="{% url 'password_reset' %}">Forgot password?</a>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-12 margin-25px-top">
+                                        <button type="submit" class="butn btn-block">Login</button>
+                                    </div>
+
+                                    <div class="col-md-12 text-center margin-25px-top">
+                                        <span>Don't have an account yet? <a href="{% url 'accounts:register' %}">Register</a></span>
+                                    </div>
+
+                            </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock content %}
